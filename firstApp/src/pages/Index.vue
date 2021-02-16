@@ -1,74 +1,46 @@
 <template>
   <q-page padding>
-    <button @click="counter++">
-      {{ counter }}
-    </button>
-    <input v-model="message"
-    @keyup.esc="clearMessage"
-    @keyup.enter="alertMessage"
-    v-autofocus
-    :class="{ 'error' : message.length > 22 }"
-    ref="messageInput">
-    <button @click="clearMessage()">Click</button>
-    <h1 class="border-grey" v-if="message.length"> {{message}} {{message.length}} </h1>
-
-    <h4 v-else>No Mesannge Entered</h4>
-
-    <hr>
-    <p >Uppercase message: {{ messageUppercase }}</p>
-    <p>Lowercase message: {{ message | messageLowercase }} </p>
-  </q-page>
+    <ul>
+      <li v-for="(task,index) in task" :key="task">
+        <div>
+          {{task.name}} {{ index + 1  }}
+        </div>
+        <small>{{task.date}} {{task.time}}</small>
+        <button @click="deleteTask(index)">X</button>
+      </li>
+    </ul>
+      </q-page>
 </template>
 
 <script>
 export default {
   data () {
     return {
-      message: 'Quasar is fun ',
-      counter: 0
-    }
-  },
-  computed: {
-    messageUppercase () {
-      return this.message.toUpperCase() + this.counter
+      task: [
+        {
+          name: 'Go to shop',
+          date: '2020/02/15',
+          time: '8:00'
+        },
+        {
+          name: 'Get banana',
+          date: '2019/03/28',
+          time: '3:00'
+        },
+        {
+          name: 'Feed Rocky',
+          date: '2022/04/25',
+          time: '7:00'
+        }
+      ]
     }
   },
   methods: {
-    clearMessage () {
-      this.message = ''
-    },
-    alertMessage () {
-      alert(this.message)
+    deleteTask (index) {
+      this.task.splice(index, 1)
     }
-  },
-  filters: {
-    messageLowercase (value) {
-      return value.toLowerCase()
-    }
-  },
-  directives: {
-    autofocus: {
-      inserted (el) {
-        el.focus()
-      }
-    }
-  },
-  mounted () {
-    console.log(this.$refs)
-    this.$refs.messageInput.className = 'bg-green'
   }
 }
 </script>
 <style>
- .border-grey {
-   border: 1px solid grey;
- }
- input, bottom {
-   font-size: 23px;
- }
- .error {
-   color: red;
-   background: pink;
-    }
-
 </style>
